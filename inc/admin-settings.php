@@ -30,7 +30,8 @@ function mlab_em_add_settings_page(): void {
  */
 function mlab_em_register_settings(): void {
 	register_setting( 'mlab_em_settings', MLAB_EM_OPTION, array( 'sanitize_callback' => 'mlab_em_sanitize_settings' ) );
-	add_settings_section( 'mlab_em_general', '', '__return_null', 'mlab-em-settings' );
+	add_settings_section( 'mlab_em_pages', __( 'Pages', 'mlab-eventmanager' ), '__return_null', 'mlab-em-settings' );
+	add_settings_section( 'mlab_em_display', __( 'Display', 'mlab-eventmanager' ), '__return_null', 'mlab-em-settings' );
 
 	foreach ( mlab_em_settings_fields() as $key => $field ) {
 		add_settings_field(
@@ -38,7 +39,7 @@ function mlab_em_register_settings(): void {
 			$field['label'],
 			'mlab_em_render_setting_field',
 			'mlab-em-settings',
-			'mlab_em_general',
+			'mlab_em_' . ( $field['section'] ?? 'display' ),
 			array(
 				'key'       => $key,
 				'field'     => $field,
@@ -67,8 +68,10 @@ function mlab_em_render_setting_field( array $args ): void {
 				'option_none_value' => '0',
 			)
 		);
+	} elseif ( 'checkbox' === $args['field']['type'] ) {
+		printf( '<input type="checkbox" id="%s" name="%s" value="1"%s>', esc_attr( $args['label_for'] ), esc_attr( $name ), checked( (int) $value, 1, false ) );
 	} else {
-		printf( '<input type="number" min="1" class="small-text" id="%s" name="%s" value="%s">', esc_attr( $args['label_for'] ), esc_attr( $name ), esc_attr( (string) $value ) );
+		printf( '<input type="number" min="%d" class="small-text" id="%s" name="%s" value="%s">', (int) ( $args['field']['min'] ?? 1 ), esc_attr( $args['label_for'] ), esc_attr( $name ), esc_attr( (string) $value ) );
 	}
 
 	if ( ! empty( $args['field']['description'] ) ) {

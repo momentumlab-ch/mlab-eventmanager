@@ -1,8 +1,8 @@
 <?php
 /**
- * Quick entry form for phones: [mlab_event_form].
+ * Quick entry for phones: [mlab_event_form].
  * Requires a WordPress login. Users who may publish posts publish directly,
- * all others submit for review.
+ * all others submit for review. The same page lists, edits and deletes the user's own events.
  *
  * @package mlab-eventmanager
  */
@@ -34,7 +34,7 @@ function mlab_em_user_can( string $cap ): bool {
 }
 
 /**
- * Renders the form, or a login form for guests.
+ * Renders the quick entry page, or a login form for guests.
  */
 function mlab_em_render_form_shortcode(): string {
 	wp_enqueue_style( 'mlab-em-form' );
@@ -50,17 +50,37 @@ function mlab_em_render_form_shortcode(): string {
 		return '<div class="mlab-em-form-wrap">' . mlab_em_get_template( 'event-notice', $notice ) . '</div>';
 	}
 
+	$view = mlab_em_current_view();
+
+	return mlab_em_get_template(
+		'event-page',
+		array(
+			'view'   => $view['name'],
+			'notice' => mlab_em_form_notice(),
+			'body'   => mlab_em_render_view( $view ),
+		)
+	);
+}
+
+/**
+ * Prepares the form for a new event or an existing one.
+ *
+ * @param WP_Post|null $event Event to edit, null for a new one.
+ */
+function mlab_em_render_event_form( ?WP_Post $event ): string {
+	$category = $event ? wp_get_object_terms( $event->ID, MLAB_EM_CATEGORY, array( 'fields' => 'ids' ) ) : array();
+
 	return mlab_em_get_template(
 		'event-form',
 		array(
-			'fields'     => array_filter( mlab_em_event_fields(), static fn( $field ) => ! empty( $field['quick'] ) ),
+			'event'      => $event,
 			'categories' => get_terms(
 				array(
 					'taxonomy'   => MLAB_EM_CATEGORY,
 					'hide_empty' => false,
 				)
 			),
-			'notice'     => mlab_em_form_notice(),
+			'category'   => is_array( $category ) && $category ? (int) $category[0] : 0,
 		)
 	);
 }
@@ -76,6 +96,8 @@ function mlab_em_notice_messages( string $field_label ): array {
 		'publish'       => array( 'success', __( 'Event saved and published.', 'mlab-eventmanager' ) ),
 		'pending'       => array( 'success', __( 'Event saved. It will be published after review.', 'mlab-eventmanager' ) ),
 		'draft'         => array( 'success', __( 'Event saved as draft.', 'mlab-eventmanager' ) ),
+		'updated'       => array( 'success', __( 'Changes saved.', 'mlab-eventmanager' ) ),
+		'deleted'       => array( 'success', __( 'Event moved to the trash.', 'mlab-eventmanager' ) ),
 		'image_failed'  => array( 'warning', __( 'Event saved, but the photo could not be uploaded. Please add it in the backend.', 'mlab-eventmanager' ) ),
 		'missing_title' => array( 'error', __( 'Please enter a title.', 'mlab-eventmanager' ) ),
 		/* translators: %s: field label, e.g. "Start". */
@@ -122,21 +144,32 @@ function mlab_em_handle_submit(): void {
 	}
 
 	$result = mlab_em_create_event_from_request();
-	$back   = remove_query_arg( array( 'mlab_em_status', 'mlab_em_event', 'mlab_em_field' ), mlab_em_back_url() );
 
 	if ( is_wp_error( $result ) ) {
-		$args = array(
-			'mlab_em_status' => $result->get_error_code(),
-			'mlab_em_field'  => $result->get_error_data(),
-		);
-	} else {
-		$args = array(
-			'mlab_em_status' => mlab_em_attach_uploaded_image( $result ) ? get_post_status( $result ) : 'image_failed',
-			'mlab_em_event'  => $result,
-		);
+		mlab_em_redirect_with_status( mlab_em_back_url(), $result->get_error_code(), 0, (string) $result->get_error_data() );
 	}
 
-	wp_safe_redirect( add_query_arg( array_filter( $args ), $back ) );
+	$status = mlab_em_attach_uploaded_image( $result ) ? (string) get_post_status( $result ) : 'image_failed';
+	mlab_em_redirect_with_status( mlab_em_back_url(), $status, $result );
+}
+
+/**
+ * Redirects to a URL with the result code that the notice reads.
+ *
+ * @param string $url      Target URL.
+ * @param string $status   Notice code.
+ * @param int    $event_id Event the notice links to, 0 for none.
+ * @param string $field    Field key for "missing_field".
+ */
+function mlab_em_redirect_with_status( string $url, string $status, int $event_id = 0, string $field = '' ): void {
+	$url  = remove_query_arg( array( 'mlab_em_status', 'mlab_em_event', 'mlab_em_field' ), $url );
+	$args = array(
+		'mlab_em_status' => $status,
+		'mlab_em_event'  => $event_id,
+		'mlab_em_field'  => $field,
+	);
+
+	wp_safe_redirect( add_query_arg( array_filter( $args ), $url ) );
 	exit;
 }
 
@@ -159,27 +192,47 @@ function mlab_em_submit_post_status(): string {
 }
 
 /**
+ * The posted form values, still unsanitized. Each is sanitized per type when saved.
+ *
+ * @return array<string, mixed>
+ */
+function mlab_em_posted_input(): array {
+	// Nonce checked by the calling handler; fields are sanitized per type in mlab_em_save_fields().
+	return isset( $_POST['mlab_em'] ) && is_array( $_POST['mlab_em'] ) ? wp_unslash( $_POST['mlab_em'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+}
+
+/**
+ * Checks title and required fields of a submission.
+ *
+ * @param array<string, mixed> $input Raw values.
+ * @return WP_Error|null Error with a notice code, or null if the input is complete.
+ */
+function mlab_em_validate_input( array $input ): ?WP_Error {
+	if ( '' === sanitize_text_field( $input['title'] ?? '' ) ) {
+		return new WP_Error( 'missing_title' );
+	}
+
+	$missing = mlab_em_missing_required_field( $input );
+
+	return null === $missing ? null : new WP_Error( 'missing_field', '', $missing );
+}
+
+/**
  * Creates the event from the posted form.
  *
  * @return int|WP_Error Event ID or error with a notice code.
  */
 function mlab_em_create_event_from_request() {
-	// Nonce checked in mlab_em_handle_submit(); fields are sanitized per type in mlab_em_save_fields().
-	$input = isset( $_POST['mlab_em'] ) && is_array( $_POST['mlab_em'] ) ? wp_unslash( $_POST['mlab_em'] ) : array(); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-	$title = sanitize_text_field( $input['title'] ?? '' );
-
-	if ( '' === $title ) {
-		return new WP_Error( 'missing_title' );
-	}
-	$missing = mlab_em_missing_required_field( $input );
-	if ( null !== $missing ) {
-		return new WP_Error( 'missing_field', '', $missing );
+	$input = mlab_em_posted_input();
+	$error = mlab_em_validate_input( $input );
+	if ( $error ) {
+		return $error;
 	}
 
 	$post_id = wp_insert_post(
 		array(
 			'post_type'    => MLAB_EM_POST_TYPE,
-			'post_title'   => $title,
+			'post_title'   => sanitize_text_field( $input['title'] ),
 			'post_content' => sanitize_textarea_field( $input['description'] ?? '' ),
 			'post_status'  => mlab_em_submit_post_status(),
 		),
@@ -197,13 +250,15 @@ function mlab_em_create_event_from_request() {
 }
 
 /**
- * Assigns the chosen category, if it exists.
+ * Assigns the chosen category if it exists. 0 removes the category.
  *
  * @param int $post_id Event ID.
  * @param int $term_id Category term ID, 0 for none.
  */
 function mlab_em_assign_category( int $post_id, int $term_id ): void {
-	if ( $term_id && term_exists( $term_id, MLAB_EM_CATEGORY ) ) {
+	if ( ! $term_id ) {
+		wp_set_object_terms( $post_id, array(), MLAB_EM_CATEGORY );
+	} elseif ( term_exists( $term_id, MLAB_EM_CATEGORY ) ) {
 		wp_set_object_terms( $post_id, $term_id, MLAB_EM_CATEGORY );
 	}
 }
