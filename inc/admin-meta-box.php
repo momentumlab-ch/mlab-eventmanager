@@ -26,11 +26,7 @@ function mlab_em_render_meta_box( WP_Post $post ): void {
 	wp_nonce_field( 'mlab_em_save_meta', 'mlab_em_meta_nonce' );
 
 	echo '<div class="mlab-em-meta-box">';
-	foreach ( mlab_em_event_fields() as $key => $field ) {
-		echo '<p class="mlab-em-field">';
-		mlab_em_render_input( $key, $field, mlab_em_get_field( $post->ID, $key ) );
-		echo '</p>';
-	}
+	mlab_em_render_field_groups( mlab_em_event_fields(), static fn( $key ) => mlab_em_get_field( $post->ID, $key ) );
 	echo '</div>';
 }
 

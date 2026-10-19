@@ -1,7 +1,7 @@
 <?php
 /**
- * Event fields in one place. Meta box, saving, REST, quick entry form and
- * display all read from mlab_em_event_fields().
+ * Event fields in one place: definitions, sanitizing, saving and input rendering.
+ * Meta box, REST, phone form, admin list and event page all read from mlab_em_event_fields().
  *
  * @package mlab-eventmanager
  */
@@ -11,54 +11,130 @@ defined( 'ABSPATH' ) || exit;
 const MLAB_EM_DATE_FORMAT = 'Y-m-d H:i';
 
 /**
+ * Field groups in display order. Extend via the "mlab_em_field_groups" filter.
+ *
+ * @return array<string, string> Group key => label.
+ */
+function mlab_em_field_groups(): array {
+	$groups = array(
+		'when'      => __( 'When', 'mlab-eventmanager' ),
+		'where'     => __( 'Where', 'mlab-eventmanager' ),
+		'online'    => __( 'Online', 'mlab-eventmanager' ),
+		'organizer' => __( 'Organizer', 'mlab-eventmanager' ),
+		'tickets'   => __( 'Tickets and price', 'mlab-eventmanager' ),
+	);
+
+	return apply_filters( 'mlab_em_field_groups', $groups );
+}
+
+/**
+ * Label of a field group.
+ *
+ * @param string $group Group key.
+ */
+function mlab_em_group_label( string $group ): string {
+	return mlab_em_field_groups()[ $group ] ?? __( 'More', 'mlab-eventmanager' );
+}
+
+/**
  * Field definitions. Add or change fields via the "mlab_em_event_fields" filter.
  *
- * Keys: label, type (datetime|text|url|textarea), required, default,
- * quick (shown in the phone form), column (shown in the admin list),
- * button (url fields: shown as button with this text), details (false hides it on the event page).
+ * Keys: label, type (datetime|text|url|textarea|post), group, required, default, hint,
+ * quick (visible without "More details" in the phone form), post_type (type post),
+ * column (shown in the admin list), button (url fields: shown as button with this text),
+ * details (false hides it from the event page).
  *
  * @return array<string, array<string, mixed>>
  */
 function mlab_em_event_fields(): array {
 	$fields = array(
-		'start'      => array(
+		'start'        => array(
 			'label'    => __( 'Start', 'mlab-eventmanager' ),
 			'type'     => 'datetime',
+			'group'    => 'when',
 			'required' => true,
 			'quick'    => true,
 			'default'  => mlab_em_default_start(),
 		),
-		'end'        => array(
+		'end'          => array(
 			'label' => __( 'End (optional)', 'mlab-eventmanager' ),
 			'type'  => 'datetime',
+			'group' => 'when',
 			'quick' => true,
 		),
-		'location'   => array(
-			'label'  => __( 'Location', 'mlab-eventmanager' ),
-			'type'   => 'text',
-			'quick'  => true,
-			'column' => true,
+		'venue_id'     => array(
+			'label'     => __( 'Venue', 'mlab-eventmanager' ),
+			'type'      => 'post',
+			'post_type' => MLAB_EM_VENUE,
+			'group'     => 'where',
+			'quick'     => true,
+			'details'   => false,
 		),
-		'address'    => array(
-			'label' => __( 'Address', 'mlab-eventmanager' ),
-			'type'  => 'text',
+		'location'     => array(
+			'label'   => __( 'Location', 'mlab-eventmanager' ),
+			'type'    => 'text',
+			'group'   => 'where',
+			'quick'   => true,
+			'details' => false,
+			'hint'    => __( 'Only needed if no venue is selected.', 'mlab-eventmanager' ),
 		),
-		'organizer'  => array(
-			'label' => __( 'Organizer', 'mlab-eventmanager' ),
-			'type'  => 'text',
+		'address'      => array(
+			'label'   => __( 'Address', 'mlab-eventmanager' ),
+			'type'    => 'text',
+			'group'   => 'where',
+			'details' => false,
+			'hint'    => __( 'Only needed if no venue is selected.', 'mlab-eventmanager' ),
 		),
-		'price'      => array(
+		'online_url'   => array(
+			'label'  => __( 'Online link', 'mlab-eventmanager' ),
+			'type'   => 'url',
+			'group'  => 'online',
+			'button' => __( 'Join online', 'mlab-eventmanager' ),
+		),
+		'organizer_id' => array(
+			'label'     => __( 'Organizer', 'mlab-eventmanager' ),
+			'type'      => 'post',
+			'post_type' => MLAB_EM_ORGANIZER,
+			'group'     => 'organizer',
+			'details'   => false,
+		),
+		'organizer'    => array(
+			'label'   => __( 'Other organizer', 'mlab-eventmanager' ),
+			'type'    => 'text',
+			'group'   => 'organizer',
+			'details' => false,
+			'hint'    => __( 'Only needed if no organizer is selected.', 'mlab-eventmanager' ),
+		),
+		'price'        => array(
 			'label' => __( 'Price', 'mlab-eventmanager' ),
 			'type'  => 'text',
+			'group' => 'tickets',
 		),
-		'ticket_url' => array(
+		'ticket_url'   => array(
 			'label'  => __( 'Ticket link', 'mlab-eventmanager' ),
 			'type'   => 'url',
+			'group'  => 'tickets',
 			'button' => __( 'Get tickets', 'mlab-eventmanager' ),
 		),
 	);
 
 	return apply_filters( 'mlab_em_event_fields', $fields );
+}
+
+/**
+ * Sorts fields into their groups, in group order. Unknown groups come last.
+ *
+ * @param array<string, array<string, mixed>> $fields Field definitions.
+ * @return array<string, array<string, array<string, mixed>>> Group => fields.
+ */
+function mlab_em_group_fields( array $fields ): array {
+	$groups = array_fill_keys( array_keys( mlab_em_field_groups() ), array() );
+
+	foreach ( $fields as $key => $field ) {
+		$groups[ $field['group'] ?? 'other' ][ $key ] = $field;
+	}
+
+	return array_filter( $groups );
 }
 
 /**
@@ -82,7 +158,7 @@ function mlab_em_meta_key( string $key ): string {
 /**
  * Stored value of a field.
  *
- * @param int    $post_id Event ID.
+ * @param int    $post_id Post ID (event, venue or organizer).
  * @param string $key     Field key.
  */
 function mlab_em_get_field( int $post_id, string $key ): string {
@@ -92,10 +168,11 @@ function mlab_em_get_field( int $post_id, string $key ): string {
 /**
  * Sanitizes one value according to its field type.
  *
- * @param mixed  $value Raw value.
- * @param string $type  Field type.
+ * @param mixed                $value Raw value.
+ * @param string               $type  Field type.
+ * @param array<string, mixed> $field Field definition, for the allowed post types of linked entries.
  */
-function mlab_em_sanitize_value( $value, string $type ): string {
+function mlab_em_sanitize_value( $value, string $type, array $field = array() ): string {
 	$raw = is_scalar( $value ) ? (string) $value : '';
 
 	switch ( $type ) {
@@ -109,11 +186,47 @@ function mlab_em_sanitize_value( $value, string $type ): string {
 		case 'textarea':
 			$clean = sanitize_textarea_field( $raw );
 			break;
+		case 'post':
+			$clean = mlab_em_sanitize_linked_post( absint( $raw ), (array) ( $field['post_type'] ?? mlab_em_linked_post_types() ) );
+			break;
+		case 'latitude':
+			$clean = mlab_em_sanitize_coordinate( $raw, 90 );
+			break;
+		case 'longitude':
+			$clean = mlab_em_sanitize_coordinate( $raw, 180 );
+			break;
 		default:
 			$clean = sanitize_text_field( $raw );
 	}
 
 	return (string) apply_filters( 'mlab_em_sanitize_value', $clean, $value, $type );
+}
+
+/**
+ * A venue or organizer ID is only kept if it is a published entry of ours.
+ *
+ * @param int      $post_id    Post ID, 0 for none.
+ * @param string[] $post_types Allowed post types.
+ */
+function mlab_em_sanitize_linked_post( int $post_id, array $post_types ): string {
+	$valid = $post_id && 'publish' === get_post_status( $post_id ) && in_array( get_post_type( $post_id ), $post_types, true );
+
+	return $valid ? (string) $post_id : '';
+}
+
+/**
+ * A coordinate in decimal degrees within +/- $limit, or empty.
+ *
+ * @param string $raw   Raw input, comma or point as decimal separator.
+ * @param int    $limit Largest allowed absolute value.
+ */
+function mlab_em_sanitize_coordinate( string $raw, int $limit ): string {
+	$raw = str_replace( ',', '.', trim( $raw ) );
+	if ( ! is_numeric( $raw ) || abs( (float) $raw ) > $limit ) {
+		return '';
+	}
+
+	return (string) round( (float) $raw, 6 );
 }
 
 /**
@@ -123,7 +236,7 @@ function mlab_em_sanitize_value( $value, string $type ): string {
  */
 function mlab_em_missing_required_field( array $input ): ?string {
 	foreach ( mlab_em_event_fields() as $key => $field ) {
-		if ( ! empty( $field['required'] ) && '' === mlab_em_sanitize_value( $input[ $key ] ?? '', $field['type'] ) ) {
+		if ( ! empty( $field['required'] ) && '' === mlab_em_sanitize_value( $input[ $key ] ?? '', $field['type'], $field ) ) {
 			return $key;
 		}
 	}
@@ -132,34 +245,56 @@ function mlab_em_missing_required_field( array $input ): ?string {
 }
 
 /**
- * Saves submitted field values. An empty end takes the start, so lists can
+ * Sanitizes the submitted values of the given fields. Fields not submitted are skipped.
+ *
+ * @param array<string, array<string, mixed>> $fields Field definitions.
+ * @param array<string, mixed>                $input  Raw values keyed by field key.
+ * @return array<string, string>
+ */
+function mlab_em_sanitize_values( array $fields, array $input ): array {
+	$values = array();
+
+	foreach ( $fields as $key => $field ) {
+		if ( array_key_exists( $key, $input ) ) {
+			$values[ $key ] = mlab_em_sanitize_value( $input[ $key ], $field['type'], $field );
+		}
+	}
+
+	return $values;
+}
+
+/**
+ * Writes sanitized values as post meta.
+ *
+ * @param int                  $post_id Post ID.
+ * @param array<string, mixed> $values  Sanitized values keyed by field key.
+ */
+function mlab_em_store_values( int $post_id, array $values ): void {
+	foreach ( $values as $key => $value ) {
+		update_post_meta( $post_id, mlab_em_meta_key( $key ), $value );
+	}
+}
+
+/**
+ * Saves submitted event values. An empty end takes the start, so lists can
  * filter on the end date alone.
  *
  * @param int                  $post_id Event ID.
  * @param array<string, mixed> $input   Raw values keyed by field key.
  */
 function mlab_em_save_fields( int $post_id, array $input ): void {
-	$values = array();
-
-	foreach ( mlab_em_event_fields() as $key => $field ) {
-		if ( array_key_exists( $key, $input ) ) {
-			$values[ $key ] = mlab_em_sanitize_value( $input[ $key ], $field['type'] );
-		}
-	}
+	$values = mlab_em_sanitize_values( mlab_em_event_fields(), $input );
 
 	if ( isset( $values['start'] ) && ( empty( $values['end'] ) || $values['end'] < $values['start'] ) ) {
 		$values['end'] = $values['start'];
 	}
 
-	foreach ( $values as $key => $value ) {
-		update_post_meta( $post_id, mlab_em_meta_key( $key ), $value );
-	}
-
+	mlab_em_store_values( $post_id, $values );
 	do_action( 'mlab_em_event_saved', $post_id, $values );
 }
 
 /**
- * Prints the input for one field. Shared by the meta box and the phone form.
+ * Prints label, input and hint for one field. Shared by the meta boxes and the phone form.
  * Custom field types render as text input unless "mlab_em_input_type" maps them.
  *
  * @param string               $key   Field key.
@@ -167,12 +302,31 @@ function mlab_em_save_fields( int $post_id, array $input ): void {
  * @param string               $value Current value.
  */
 function mlab_em_render_input( string $key, array $field, string $value ): void {
-	$id       = 'mlab-em-' . str_replace( '_', '-', $key );
-	$name     = 'mlab_em[' . $key . ']';
-	$required = empty( $field['required'] ) ? '' : ' required';
+	$id = 'mlab-em-' . str_replace( '_', '-', $key );
 
 	printf( '<label class="mlab-em-label" for="%s">%s</label>', esc_attr( $id ), esc_html( $field['label'] ) );
+	mlab_em_render_control( $id, 'mlab_em[' . $key . ']', $field, $value );
 
+	if ( ! empty( $field['hint'] ) ) {
+		printf( '<span class="mlab-em-hint">%s</span>', esc_html( $field['hint'] ) );
+	}
+}
+
+/**
+ * Prints the form control of a field.
+ *
+ * @param string               $id    Element ID.
+ * @param string               $name  Input name.
+ * @param array<string, mixed> $field Field definition.
+ * @param string               $value Current value.
+ */
+function mlab_em_render_control( string $id, string $name, array $field, string $value ): void {
+	$required = empty( $field['required'] ) ? '' : ' required';
+
+	if ( 'post' === $field['type'] ) {
+		mlab_em_render_post_select( $id, $name, (string) $field['post_type'], $value );
+		return;
+	}
 	if ( 'textarea' === $field['type'] ) {
 		printf( '<textarea id="%s" name="%s" rows="4"%s>%s</textarea>', esc_attr( $id ), esc_attr( $name ), esc_attr( $required ), esc_textarea( $value ) );
 		return;
@@ -182,139 +336,63 @@ function mlab_em_render_input( string $key, array $field, string $value ): void 
 		'datetime' => 'datetime-local',
 		'url'      => 'url',
 	);
-	$type  = $types[ $field['type'] ] ?? 'text';
+	$type  = (string) apply_filters( 'mlab_em_input_type', $types[ $field['type'] ] ?? 'text', $field );
 	$value = 'datetime' === $field['type'] ? str_replace( ' ', 'T', $value ) : $value;
-	$type  = (string) apply_filters( 'mlab_em_input_type', $type, $field );
 
 	printf( '<input type="%s" id="%s" name="%s" value="%s"%s>', esc_attr( $type ), esc_attr( $id ), esc_attr( $name ), esc_attr( $value ), esc_attr( $required ) );
 }
 
 /**
- * Unix timestamp of a datetime field, in the site timezone.
+ * Prints a select of published venues or organizers.
  *
- * @param int    $post_id Event ID.
- * @param string $key     Field key.
+ * @param string $id        Element ID.
+ * @param string $name      Input name.
+ * @param string $post_type Post type to list.
+ * @param string $value     Selected post ID.
  */
-function mlab_em_get_timestamp( int $post_id, string $key ): ?int {
-	$date = DateTimeImmutable::createFromFormat( MLAB_EM_DATE_FORMAT, mlab_em_get_field( $post_id, $key ), wp_timezone() );
-
-	return $date ? $date->getTimestamp() : null;
-}
-
-/**
- * Human readable date range, e.g. "24. Oktober 2026, 19:00 – 22:00".
- *
- * @param int $post_id Event ID.
- */
-function mlab_em_format_date_range( int $post_id ): string {
-	$start = mlab_em_get_timestamp( $post_id, 'start' );
-	if ( null === $start ) {
-		return '';
-	}
-
-	$date_format = get_option( 'date_format' );
-	$time_format = get_option( 'time_format' );
-	$output      = wp_date( $date_format . ', ' . $time_format, $start );
-	$end         = mlab_em_get_timestamp( $post_id, 'end' );
-
-	if ( null !== $end && $end > $start ) {
-		$same_day = wp_date( 'Y-m-d', $start ) === wp_date( 'Y-m-d', $end );
-		$output  .= ' – ' . wp_date( $same_day ? $time_format : $date_format . ', ' . $time_format, $end );
-	}
-
-	return (string) apply_filters( 'mlab_em_date_range', $output, $post_id );
-}
-
-/**
- * Current site time in storage format, for upcoming/past queries.
- */
-function mlab_em_now(): string {
-	return current_datetime()->format( MLAB_EM_DATE_FORMAT );
-}
-
-/**
- * Rows for the event page: the date range, then every filled field.
- *
- * @param int $post_id Event ID.
- * @return array<string, string> Label => text.
- */
-function mlab_em_details_rows( int $post_id ): array {
-	$rows = array( __( 'When', 'mlab-eventmanager' ) => mlab_em_format_date_range( $post_id ) );
-
-	foreach ( mlab_em_event_fields() as $key => $field ) {
-		$skip = in_array( $key, array( 'start', 'end' ), true ) || false === ( $field['details'] ?? true ) || ! empty( $field['button'] );
-		if ( ! $skip ) {
-			$rows[ $field['label'] ] = mlab_em_display_value( $post_id, $key, $field['type'] );
-		}
-	}
-
-	return array_filter( apply_filters( 'mlab_em_details_rows', $rows, $post_id ) );
-}
-
-/**
- * Buttons for the event page from url fields with a "button" text.
- *
- * @param int $post_id Event ID.
- * @return array<int, array{url: string, label: string}>
- */
-function mlab_em_details_buttons( int $post_id ): array {
-	$buttons = array();
-
-	foreach ( mlab_em_event_fields() as $key => $field ) {
-		$url = mlab_em_get_field( $post_id, $key );
-		if ( ! empty( $field['button'] ) && '' !== $url ) {
-			$buttons[] = array(
-				'url'   => $url,
-				'label' => $field['button'],
-			);
-		}
-	}
-
-	return $buttons;
-}
-
-/**
- * Display text of one field: dates formatted, everything else as stored.
- *
- * @param int    $post_id Event ID.
- * @param string $key     Field key.
- * @param string $type    Field type.
- */
-function mlab_em_display_value( int $post_id, string $key, string $type ): string {
-	if ( 'datetime' !== $type ) {
-		return mlab_em_get_field( $post_id, $key );
-	}
-
-	$timestamp = mlab_em_get_timestamp( $post_id, $key );
-
-	return null === $timestamp ? '' : wp_date( get_option( 'date_format' ) . ', ' . get_option( 'time_format' ), $timestamp );
-}
-
-/**
- * Query args for events sorted by start, optionally only upcoming or past.
- * One named meta clause serves both the sort and the filter.
- *
- * @param string $show upcoming, past or all.
- * @return array<string, mixed>
- */
-function mlab_em_date_query_args( string $show ): array {
-	$meta_query = array(
-		'mlab_em_start' => array(
-			'key'     => mlab_em_meta_key( 'start' ),
-			'compare' => 'EXISTS',
-		),
+function mlab_em_render_post_select( string $id, string $name, string $post_type, string $value ): void {
+	$posts = get_posts(
+		array(
+			'post_type'   => $post_type,
+			'post_status' => 'publish',
+			'numberposts' => 200, // phpcs:ignore WordPress.WP.PostsPerPage.posts_per_page_numberposts -- A select of 200 venues is the practical limit.
+			'orderby'     => 'title',
+			'order'       => 'ASC',
+		)
 	);
 
-	if ( 'all' !== $show ) {
-		$meta_query['mlab_em_end'] = array(
-			'key'     => mlab_em_meta_key( 'end' ),
-			'value'   => mlab_em_now(),
-			'compare' => 'past' === $show ? '<' : '>=',
-		);
+	printf( '<select id="%s" name="%s">', esc_attr( $id ), esc_attr( $name ) );
+	printf( '<option value="">%s</option>', esc_html__( '— None —', 'mlab-eventmanager' ) );
+	foreach ( $posts as $post ) {
+		printf( '<option value="%d"%s>%s</option>', (int) $post->ID, selected( $value, (string) $post->ID, false ), esc_html( get_the_title( $post ) ) );
 	}
+	echo '</select>';
+}
 
-	return array(
-		'meta_query' => $meta_query, // phpcs:ignore WordPress.DB.SlowDBQuery.slow_db_query_meta_query -- Sorting and filtering by event date.
-		'orderby'    => array( 'mlab_em_start' => 'past' === $show ? 'DESC' : 'ASC' ),
-	);
+/**
+ * Prints fields as paragraphs.
+ *
+ * @param array<string, array<string, mixed>> $fields  Field definitions.
+ * @param callable                            $current Returns the current value for a field key.
+ */
+function mlab_em_render_field_list( array $fields, callable $current ): void {
+	foreach ( $fields as $key => $field ) {
+		echo '<p class="mlab-em-field">';
+		mlab_em_render_input( $key, $field, (string) $current( $key, $field ) );
+		echo '</p>';
+	}
+}
+
+/**
+ * Prints fields grouped in fieldsets, each with its group label as legend.
+ *
+ * @param array<string, array<string, mixed>> $fields  Field definitions.
+ * @param callable                            $current Returns the current value for a field key.
+ */
+function mlab_em_render_field_groups( array $fields, callable $current ): void {
+	foreach ( mlab_em_group_fields( $fields ) as $group => $group_fields ) {
+		printf( '<fieldset class="mlab-em-group mlab-em-group--%s"><legend>%s</legend>', esc_attr( $group ), esc_html( mlab_em_group_label( $group ) ) );
+		mlab_em_render_field_list( $group_fields, $current );
+		echo '</fieldset>';
+	}
 }

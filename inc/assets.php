@@ -23,11 +23,11 @@ function mlab_em_register_assets(): void {
 }
 
 /**
- * Loads the admin styles on the event editor only.
+ * Loads the admin styles on the screens of events, venues and organizers.
  */
 function mlab_em_admin_assets(): void {
 	$screen = get_current_screen();
-	if ( ! $screen || MLAB_EM_POST_TYPE !== $screen->post_type || 'post' !== $screen->base ) {
+	if ( ! $screen || ! in_array( $screen->post_type, array_merge( array( MLAB_EM_POST_TYPE ), mlab_em_linked_post_types() ), true ) ) {
 		return;
 	}
 

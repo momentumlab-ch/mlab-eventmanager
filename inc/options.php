@@ -12,23 +12,34 @@ const MLAB_EM_OPTION = 'mlab_em_settings';
 /**
  * Setting definitions. Extend via the "mlab_em_settings_fields" filter.
  *
- * Types: page (page ID) and number (positive integer, at least "min").
+ * Types: page (page ID), number (positive integer, at least "min") and checkbox (0 or 1).
  *
- * @return array<string, array{label: string, type: string, default: mixed, min?: int, description?: string}>
+ * Keys: label, type, default, section (pages|display), min, description.
+ *
+ * @return array<string, array{label: string, type: string, default: mixed, section?: string, min?: int, description?: string}>
  */
 function mlab_em_settings_fields(): array {
 	$fields = array(
 		'submit_page' => array(
 			'label'       => __( 'Quick entry page', 'mlab-eventmanager' ),
 			'type'        => 'page',
+			'section'     => 'pages',
 			'default'     => 0,
 			'description' => __( 'Page with the phone form. It is created automatically on activation.', 'mlab-eventmanager' ),
 		),
 		'per_page'    => array(
 			'label'   => __( 'Events per page', 'mlab-eventmanager' ),
 			'type'    => 'number',
+			'section' => 'display',
 			'default' => 10,
 			'min'     => 1,
+		),
+		'map_embed'   => array(
+			'label'       => __( 'Show map on event page', 'mlab-eventmanager' ),
+			'type'        => 'checkbox',
+			'section'     => 'display',
+			'default'     => 0,
+			'description' => __( 'Embeds an OpenStreetMap map for venues with coordinates. This loads content from openstreetmap.org, so mention it in your privacy policy. Without it, visitors get a link to the map.', 'mlab-eventmanager' ),
 		),
 	);
 
@@ -82,6 +93,10 @@ function mlab_em_sanitize_settings( $input ): array {
 	$clean = array();
 
 	foreach ( mlab_em_settings_fields() as $key => $field ) {
+		if ( 'checkbox' === $field['type'] ) {
+			$clean[ $key ] = empty( $input[ $key ] ) ? 0 : 1;
+			continue;
+		}
 		$clean[ $key ] = max( $field['min'] ?? 0, absint( $input[ $key ] ?? $field['default'] ) );
 	}
 

@@ -5,9 +5,135 @@
 	margin: 0 auto;
 }
 
+.mlab-em-tabs {
+	display: flex;
+	gap: 4px;
+	margin: 0 0 16px;
+	padding: 4px;
+	border-radius: 999px;
+	background: rgba(0, 0, 0, 0.06);
+}
+
+.mlab-em-tabs__tab {
+	flex: 1;
+	padding: 10px 12px;
+	border-radius: 999px;
+	color: inherit;
+	font-weight: 600;
+	text-align: center;
+	text-decoration: none;
+}
+
+.mlab-em-tabs__tab.is-active {
+	background: var(--mlab-em-surface, #fff);
+	box-shadow: 0 1px 3px rgba(0, 0, 0, 0.15);
+}
+
 .mlab-em-form {
 	display: grid;
 	gap: 16px;
+}
+
+.mlab-em-group {
+	display: grid;
+	gap: 12px;
+	margin: 0;
+	padding: 16px;
+	border: 1px solid var(--mlab-em-border);
+	border-radius: var(--mlab-em-radius);
+}
+
+.mlab-em-group legend {
+	padding: 0 8px;
+	color: var(--mlab-em-muted);
+	font-size: 0.85em;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
+}
+
+.mlab-em-hint {
+	color: var(--mlab-em-muted);
+	font-size: 0.85em;
+}
+
+.mlab-em-more {
+	display: grid;
+	gap: 16px;
+}
+
+.mlab-em-more > summary {
+	display: flex;
+	align-items: center;
+	min-height: 48px;
+	margin-bottom: 8px;
+	color: var(--mlab-em-accent);
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.mlab-em-form__thumb {
+	width: 96px;
+	height: 96px;
+	border-radius: 8px;
+	object-fit: cover;
+}
+
+.mlab-em-mine {
+	display: grid;
+	gap: 12px;
+}
+
+.mlab-em-mine__item {
+	display: grid;
+	gap: 12px;
+	padding: 16px;
+	border: 1px solid var(--mlab-em-border);
+	border-radius: var(--mlab-em-radius);
+}
+
+.mlab-em-mine__title {
+	margin: 0 0 4px;
+	font-size: 1.1em;
+}
+
+.mlab-em-mine__meta {
+	margin: 0 0 8px;
+	color: var(--mlab-em-muted);
+}
+
+.mlab-em-mine__actions {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px 16px;
+}
+
+.mlab-em-mine__actions a {
+	display: inline-flex;
+	align-items: center;
+	min-height: 44px;
+	color: var(--mlab-em-accent);
+	font-weight: 600;
+}
+
+.mlab-em-mine__actions .mlab-em-danger {
+	color: #b91c1c;
+}
+
+.mlab-em-badge--publish {
+	background: #dcfce7;
+	color: #166534;
+}
+
+.mlab-em-badge--pending {
+	background: #fef3c7;
+	color: #92400e;
+}
+
+.mlab-em-form__actions .mlab-em-link {
+	display: block;
+	padding-top: 12px;
+	text-align: center;
 }
 
 .mlab-em-form .mlab-em-field {

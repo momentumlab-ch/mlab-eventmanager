@@ -1,18 +1,20 @@
+# Copyright (C) 2026 MomentumLab
+# This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Event Manager 0.1.0\n"
+"Project-Id-Version: MomentumLab Event Manager 0.2.0\n"
 "Report-Msgid-Bugs-To: support@momentumlab.ch\n"
+"POT-Creation-Date: 2026-10-19T09:08:29+00:00\n"
+"PO-Revision-Date: 2026-10-19 09:10+0000\n"
 "Last-Translator: MomentumLab <support@momentumlab.ch>\n"
 "Language-Team: MomentumLab\n"
+"Language: de_CH\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-10-19T09:08:29+00:00\n"
-"PO-Revision-Date: 2026-10-19 09:10+0000\n"
-"Language: de_CH\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: mlab-eventmanager\n"
+"X-Generator: WP-CLI 2.12.0\n"
 
 #. Plugin Name of the plugin
 #: mlab-eventmanager.php
@@ -26,8 +28,12 @@ msgstr "https://github.com/momentumlab-ch/mlab-eventmanager"
 
 #. Description of the plugin
 #: mlab-eventmanager.php
-msgid "Lightweight event management: create, list and manage events in the backend, on the website and quickly on a phone."
-msgstr "Schlanke Event-Verwaltung: Events im Backend, auf der Website und schnell per Handy erfassen, auflisten und verwalten."
+msgid ""
+"Lightweight event management: create, list and manage events in the backend,"
+" on the website and quickly on a phone."
+msgstr ""
+"Schlanke Event-Verwaltung: Events im Backend, auf der Website und schnell "
+"per Handy erfassen, auflisten und verwalten."
 
 #. Author of the plugin
 #: mlab-eventmanager.php
@@ -39,172 +45,459 @@ msgstr "MomentumLab"
 msgid "https://momentumlab.ch"
 msgstr "https://momentumlab.ch"
 
-#: inc/activation.php:41
-#: inc/post-types.php:26
+#: inc/activation.php:41 inc/post-types.php:28
+#: templates/event-my-events.php:15 templates/event-page.php:13
 msgid "Add event"
 msgstr "Event erfassen"
 
-#: inc/admin-columns.php:22
+#: inc/admin-list.php:24
 msgid "Event date"
 msgstr "Datum"
 
-#: inc/fields.php:37
-msgid "Location"
-msgstr "Ort"
+#: inc/admin-list.php:25 inc/display.php:131 inc/fields.php:21
+msgid "Where"
+msgstr "Wo"
+
+#: inc/admin-list.php:53 inc/fields.php:22 templates/event-list-item.php:40
+msgid "Online"
+msgstr "Online"
+
+#: inc/admin-list.php:95
+msgid "Upcoming"
+msgstr "Bevorstehend"
+
+#: inc/admin-list.php:96
+msgid "Past"
+msgstr "Vergangene"
 
 #: inc/admin-meta-box.php:17
 msgid "Event details"
 msgstr "Event-Details"
 
-#: inc/admin-settings.php:20
-#: inc/admin-settings.php:87
+#: inc/admin-settings.php:20 inc/admin-settings.php:90
 msgid "Event settings"
 msgstr "Event-Einstellungen"
 
-#: inc/admin-settings.php:21
-#: inc/admin-settings.php:104
+#: inc/admin-settings.php:21 inc/admin-settings.php:107
 msgid "Settings"
 msgstr "Einstellungen"
 
-#: inc/admin-settings.php:66
+#: inc/admin-settings.php:33
+msgid "Pages"
+msgstr "Seiten"
+
+#: inc/admin-settings.php:34
+msgid "Display"
+msgstr "Anzeige"
+
+#: inc/admin-settings.php:67
 msgid "— Select a page —"
 msgstr "— Seite wählen —"
 
-#: inc/admin-settings.php:108
+#: inc/admin-settings.php:111
 msgid "Quick entry"
 msgstr "Schnellerfassung"
 
-#: inc/fields.php:25
-msgid "Start"
-msgstr "Beginn"
+#: inc/display.php:130 inc/fields.php:20
+msgid "When"
+msgstr "Wann"
 
-#: inc/fields.php:32
-msgid "End (optional)"
-msgstr "Ende (optional)"
-
-#: inc/fields.php:43
-msgid "Address"
-msgstr "Adresse"
-
-#: inc/fields.php:47
+#: inc/display.php:132 inc/fields.php:23 inc/fields.php:95
+#: inc/linked-posts.php:29
 msgid "Organizer"
 msgstr "Veranstalter"
 
-#: inc/fields.php:51
-msgid "Price"
-msgstr "Preis"
+#: inc/duplicate.php:41 templates/event-my-events.php:33
+msgid "Duplicate"
+msgstr "Duplizieren"
 
-#: inc/fields.php:55
-msgid "Ticket link"
-msgstr "Ticket-Link"
+#: inc/duplicate.php:56
+msgid "Event not found."
+msgstr "Event nicht gefunden."
 
-#: inc/options.php:22
-msgid "Quick entry page"
-msgstr "Seite für die Schnellerfassung"
+#. translators: %s: event title.
+#: inc/duplicate.php:64
+#, php-format
+msgid "%s (copy)"
+msgstr "%s (Kopie)"
 
-#: inc/options.php:25
-msgid "Page with the phone form. It is created automatically on activation."
-msgstr "Seite mit dem Handy-Formular. Sie wird bei der Aktivierung automatisch angelegt."
+#: inc/duplicate.php:100
+msgid "You may not duplicate this event."
+msgstr "Du darfst diesen Event nicht duplizieren."
 
-#: inc/options.php:28
-msgid "Events per page"
-msgstr "Events pro Seite"
+#: inc/export.php:26 inc/export.php:43
+msgid "Export events"
+msgstr "Events exportieren"
 
-#: inc/post-types.php:24
-msgid "Events"
-msgstr "Events"
+#: inc/export.php:27
+msgid "Export"
+msgstr "Export"
 
-#: inc/post-types.php:25
-msgid "Event"
-msgstr "Event"
+#: inc/export.php:44
+msgid "Downloads a CSV file that opens in Excel, Numbers and Google Sheets."
+msgstr ""
+"Lädt eine CSV-Datei herunter, die sich in Excel, Numbers und Google Sheets "
+"öffnen lässt."
 
-#: inc/post-types.php:27
-msgid "Add new event"
-msgstr "Neues Event erfassen"
+#: inc/export.php:49
+msgid "Which events"
+msgstr "Welche Events"
 
-#: inc/post-types.php:28
-msgid "Edit event"
-msgstr "Event bearbeiten"
-
-#: inc/post-types.php:29
-#: templates/event-notice.php:15
-msgid "View event"
-msgstr "Event ansehen"
-
-#: inc/post-types.php:30
-msgid "Search events"
-msgstr "Events durchsuchen"
-
-#: inc/post-types.php:31
-msgid "No events found."
-msgstr "Keine Events gefunden."
-
-#: inc/post-types.php:32
-msgid "No events found in the trash."
-msgstr "Keine Events im Papierkorb."
-
-#: inc/post-types.php:33
+#: inc/export.php:51 inc/post-types.php:35
 msgid "All events"
 msgstr "Alle Events"
 
-#: inc/post-types.php:42
+#: inc/export.php:52
+msgid "Upcoming events"
+msgstr "Bevorstehende Events"
+
+#: inc/export.php:53
+msgid "Past events"
+msgstr "Vergangene Events"
+
+#: inc/export.php:56
+msgid "Download CSV"
+msgstr "CSV herunterladen"
+
+#: inc/export.php:70 templates/event-form.php:29
+msgid "Title"
+msgstr "Titel"
+
+#: inc/export.php:71
+msgid "Status"
+msgstr "Status"
+
+#: inc/export.php:72 templates/event-filters.php:28
+#: templates/event-form.php:40
+msgid "Category"
+msgstr "Kategorie"
+
+#: inc/export.php:78
+msgid "Address of venue"
+msgstr "Adresse des Ortes"
+
+#: inc/export.php:79
+msgid "Link"
+msgstr "Link"
+
+#: inc/export.php:100
+msgid "You may not export events."
+msgstr "Du darfst keine Events exportieren."
+
+#: inc/fields.php:24
+msgid "Tickets and price"
+msgstr "Tickets und Preis"
+
+#: inc/fields.php:36
+msgid "More"
+msgstr "Weiteres"
+
+#: inc/fields.php:52 templates/admin-migration.php:39
+msgid "Start"
+msgstr "Beginn"
+
+#: inc/fields.php:60
+msgid "End (optional)"
+msgstr "Ende (optional)"
+
+#: inc/fields.php:66 inc/linked-posts.php:28
+msgid "Venue"
+msgstr "Ort"
+
+#: inc/fields.php:74
+msgid "Location"
+msgstr "Ort"
+
+#: inc/fields.php:79 inc/fields.php:86
+msgid "Only needed if no venue is selected."
+msgstr "Nur nötig, wenn kein Ort ausgewählt ist."
+
+#: inc/fields.php:82 inc/linked-posts.php:70
+msgid "Address"
+msgstr "Adresse"
+
+#: inc/fields.php:89
+msgid "Online link"
+msgstr "Online-Link"
+
+#: inc/fields.php:92
+msgid "Join online"
+msgstr "Online teilnehmen"
+
+#: inc/fields.php:102
+msgid "Other organizer"
+msgstr "Anderer Veranstalter"
+
+#: inc/fields.php:106
+msgid "Only needed if no organizer is selected."
+msgstr "Nur nötig, wenn kein Veranstalter ausgewählt ist."
+
+#: inc/fields.php:109
+msgid "Price"
+msgstr "Preis"
+
+#: inc/fields.php:114
+msgid "Ticket link"
+msgstr "Ticket-Link"
+
+#: inc/fields.php:117
+msgid "Get tickets"
+msgstr "Tickets kaufen"
+
+#: inc/fields.php:363
+msgid "— None —"
+msgstr "– Keine –"
+
+#: inc/linked-posts.php:28
+msgid "Venues"
+msgstr "Orte"
+
+#: inc/linked-posts.php:28
+msgid "Add venue"
+msgstr "Ort hinzufügen"
+
+#: inc/linked-posts.php:29
+msgid "Organizers"
+msgstr "Veranstalter"
+
+#: inc/linked-posts.php:29
+msgid "Add organizer"
+msgstr "Veranstalter hinzufügen"
+
+#: inc/linked-posts.php:62
+msgid "Website"
+msgstr "Website"
+
+#: inc/linked-posts.php:72
+msgid "Street, postcode and city. Used for the map link."
+msgstr "Strasse, PLZ und Ort. Wird für den Link zur Karte verwendet."
+
+#: inc/linked-posts.php:75
+msgid "Latitude (optional)"
+msgstr "Breitengrad (optional)"
+
+#: inc/linked-posts.php:77
+msgid "Decimal degrees, e.g. 47.3769. Makes the map pin exact."
+msgstr "Dezimalgrad, z. B. 47.3769. Macht den Kartenpunkt genau."
+
+#: inc/linked-posts.php:80
+msgid "Longitude (optional)"
+msgstr "Längengrad (optional)"
+
+#: inc/linked-posts.php:82
+msgid "Decimal degrees, e.g. 8.5417."
+msgstr "Dezimalgrad, z. B. 8.5417."
+
+#: inc/linked-posts.php:95
+msgid "Details"
+msgstr "Details"
+
+#: inc/migration.php:29 templates/admin-migration.php:15
+msgid "Migration from WP Event Manager"
+msgstr "Migration vom WP Event Manager"
+
+#: inc/migration.php:30
+msgid "Migration"
+msgstr "Migration"
+
+#: inc/migration.php:198
+msgid "Free"
+msgstr "Gratis"
+
+#: inc/migration.php:227
+msgid "No readable start date."
+msgstr "Kein lesbares Startdatum."
+
+#: inc/migration.php:230
+msgid "The registration e-mail address cannot be copied."
+msgstr "Die E-Mail-Adresse für die Anmeldung kann nicht übernommen werden."
+
+#: inc/migration.php:233
+msgid "Marked as online, but there is no online link to copy."
+msgstr ""
+"Als Online-Event markiert, aber es gibt keinen Online-Link zum Übernehmen."
+
+#: inc/migration.php:239
+msgid "More than one organizer: only the first is copied."
+msgstr "Mehrere Veranstalter: nur der erste wird übernommen."
+
+#: inc/migration.php:470
+msgid "You may not run the migration."
+msgstr "Du darfst die Migration nicht ausführen."
+
+#: inc/my-events.php:106
+msgid "Published"
+msgstr "Veröffentlicht"
+
+#: inc/my-events.php:107
+msgid "Waiting for review"
+msgstr "Wartet auf Freigabe"
+
+#: inc/my-events.php:108
+msgid "Draft"
+msgstr "Entwurf"
+
+#: inc/my-events.php:109
+msgid "Scheduled"
+msgstr "Geplant"
+
+#: inc/my-events.php:110
+msgid "Private"
+msgstr "Privat"
+
+#: inc/my-events.php:124
+msgid "You may not change this event."
+msgstr "Du darfst diesen Event nicht ändern."
+
+#: inc/my-events.php:171
+msgid "You may not delete this event."
+msgstr "Du darfst diesen Event nicht löschen."
+
+#: inc/options.php:24
+msgid "Quick entry page"
+msgstr "Seite für die Schnellerfassung"
+
+#: inc/options.php:28
+msgid "Page with the phone form. It is created automatically on activation."
+msgstr ""
+"Seite mit dem Handy-Formular. Sie wird bei der Aktivierung automatisch "
+"angelegt."
+
+#: inc/options.php:31
+msgid "Events per page"
+msgstr "Events pro Seite"
+
+#: inc/options.php:38
+msgid "Show map on event page"
+msgstr "Karte auf der Event-Seite anzeigen"
+
+#: inc/options.php:42
+msgid ""
+"Embeds an OpenStreetMap map for venues with coordinates. This loads content "
+"from openstreetmap.org, so mention it in your privacy policy. Without it, "
+"visitors get a link to the map."
+msgstr ""
+"Bettet eine OpenStreetMap-Karte für Orte mit Koordinaten ein. Dabei werden "
+"Inhalte von openstreetmap.org geladen, erwähne das deshalb in deiner "
+"Datenschutzerklärung. Ohne diese Option erhalten Besucher einen Link zur "
+"Karte."
+
+#: inc/post-types.php:26 templates/event-page.php:18
+msgid "Events"
+msgstr "Events"
+
+#: inc/post-types.php:27 templates/admin-migration.php:38
+msgid "Event"
+msgstr "Event"
+
+#: inc/post-types.php:29
+msgid "Add new event"
+msgstr "Neues Event erfassen"
+
+#: inc/post-types.php:30
+msgid "Edit event"
+msgstr "Event bearbeiten"
+
+#: inc/post-types.php:31 templates/event-notice.php:15
+msgid "View event"
+msgstr "Event ansehen"
+
+#: inc/post-types.php:32
+msgid "Search events"
+msgstr "Events durchsuchen"
+
+#: inc/post-types.php:33
+msgid "No events found."
+msgstr "Keine Events gefunden."
+
+#: inc/post-types.php:34
+msgid "No events found in the trash."
+msgstr "Keine Events im Papierkorb."
+
+#: inc/post-types.php:44
 msgctxt "URL slug"
 msgid "events"
 msgstr "events"
 
-#: inc/post-types.php:57
+#: inc/post-types.php:59
 msgid "Event categories"
 msgstr "Event-Kategorien"
 
-#: inc/post-types.php:58
+#: inc/post-types.php:60
 msgctxt "URL slug"
 msgid "event-category"
 msgstr "event-kategorie"
 
-#: inc/post-types.php:62
+#: inc/post-types.php:64
 msgid "Event tags"
 msgstr "Event-Schlagwörter"
 
-#: inc/post-types.php:63
+#: inc/post-types.php:65
 msgctxt "URL slug"
 msgid "event-tag"
 msgstr "event-schlagwort"
 
 #: inc/submit-form.php:48
-msgid "Your account may not add events. Please ask an administrator for access."
-msgstr "Dein Konto darf keine Events erfassen. Bitte frag eine Administratorin oder einen Administrator nach Zugang."
+msgid ""
+"Your account may not add events. Please ask an administrator for access."
+msgstr ""
+"Dein Konto darf keine Events erfassen. Bitte frag eine Administratorin oder "
+"einen Administrator nach Zugang."
 
-#: inc/submit-form.php:76
+#: inc/submit-form.php:96
 msgid "Event saved and published."
 msgstr "Event gespeichert und veröffentlicht."
 
-#: inc/submit-form.php:77
+#: inc/submit-form.php:97
 msgid "Event saved. It will be published after review."
 msgstr "Event gespeichert. Es wird nach der Freigabe veröffentlicht."
 
-#: inc/submit-form.php:78
+#: inc/submit-form.php:98
 msgid "Event saved as draft."
 msgstr "Event als Entwurf gespeichert."
 
-#: inc/submit-form.php:79
-msgid "Event saved, but the photo could not be uploaded. Please add it in the backend."
-msgstr "Event gespeichert, aber das Foto konnte nicht hochgeladen werden. Bitte füge es im Backend hinzu."
+#: inc/submit-form.php:99
+msgid "Changes saved."
+msgstr "Änderungen gespeichert."
 
-#: inc/submit-form.php:80
+#: inc/submit-form.php:100
+msgid "Event moved to the trash."
+msgstr "Event in den Papierkorb verschoben."
+
+#: inc/submit-form.php:101
+msgid ""
+"Event saved, but the photo could not be uploaded. Please add it in the "
+"backend."
+msgstr ""
+"Event gespeichert, aber das Foto konnte nicht hochgeladen werden. Bitte füge"
+" es im Backend hinzu."
+
+#: inc/submit-form.php:102
 msgid "Please enter a title."
 msgstr "Bitte gib einen Titel ein."
 
-#: inc/submit-form.php:83
-msgid "The event could not be saved. Please try again."
-msgstr "Das Event konnte nicht gespeichert werden. Bitte versuche es nochmals."
+#. translators: %s: field label, e.g. "Start".
+#: inc/submit-form.php:104
+#, php-format
+msgid "Please fill in \"%s\"."
+msgstr "Bitte fülle «%s» aus."
 
-#: inc/submit-form.php:121
+#: inc/submit-form.php:105
+msgid "The event could not be saved. Please try again."
+msgstr ""
+"Das Event konnte nicht gespeichert werden. Bitte versuche es nochmals."
+
+#: inc/submit-form.php:143
 msgid "Your account may not add events."
 msgstr "Dein Konto darf keine Events erfassen."
 
 #: inc/updater.php:54
-msgid "Updates are disabled: the constant MLAB_EM_GITHUB_TOKEN is missing in wp-config.php."
-msgstr "Updates sind nicht aktiv: In wp-config.php fehlt die Konstante MLAB_EM_GITHUB_TOKEN."
+msgid ""
+"Updates are disabled: the constant MLAB_EM_GITHUB_TOKEN is missing in wp-"
+"config.php."
+msgstr ""
+"Updates sind nicht aktiv: In wp-config.php fehlt die Konstante "
+"MLAB_EM_GITHUB_TOKEN."
 
 #: templates/admin-help.php:13
 msgid "How to use"
@@ -215,63 +508,230 @@ msgid "Show events on any page with the shortcode:"
 msgstr "Events auf einer beliebigen Seite mit diesem Shortcode anzeigen:"
 
 #: templates/admin-help.php:15
-msgid "Options: show=\"upcoming\", \"past\" or \"all\", category=\"slug\", limit=\"10\"."
-msgstr "Optionen: show=\"upcoming\", \"past\" oder \"all\", category=\"slug\", limit=\"10\"."
+msgid ""
+"Options: show=\"upcoming\", \"past\" or \"all\", category=\"slug\", "
+"limit=\"10\", filters=\"yes\" (search, category and date for visitors)."
+msgstr ""
+"Optionen: show=\"upcoming\", \"past\" oder \"all\", category=\"slug\", "
+"limit=\"10\", filters=\"yes\" (Suche, Kategorie und Datum für Besucher)."
 
 #: templates/admin-help.php:18
-msgid "Add events on your phone: open this page and save it to your home screen."
-msgstr "Events per Handy erfassen: Diese Seite öffnen und auf dem Home-Bildschirm speichern."
+msgid ""
+"Add events on your phone: open this page and save it to your home screen."
+msgstr ""
+"Events per Handy erfassen: Diese Seite öffnen und auf dem Home-Bildschirm "
+"speichern."
 
 #: templates/admin-help.php:22
-msgid "Choose a page for quick entry below, or add the shortcode [mlab_event_form] to any page."
-msgstr "Wähle unten eine Seite für die Schnellerfassung oder füge den Shortcode [mlab_event_form] auf einer beliebigen Seite ein."
+msgid ""
+"Choose a page for quick entry below, or add the shortcode [mlab_event_form] "
+"to any page."
+msgstr ""
+"Wähle unten eine Seite für die Schnellerfassung oder füge den Shortcode "
+"[mlab_event_form] auf einer beliebigen Seite ein."
 
-#: inc/fields.php:242
-msgid "When"
-msgstr "Wann"
+#. translators: 1: number of events, 2: number of skipped events, 3: number of
+#. events left.
+#: templates/admin-migration.php:24
+#, php-format
+msgid ""
+"Check done, nothing was changed. %1$d events can be copied, %2$d cannot. "
+"%3$d more are waiting."
+msgstr ""
+"Prüfung abgeschlossen, es wurde nichts geändert. %1$d Events können "
+"übernommen werden, %2$d nicht. %3$d weitere warten."
 
-#: inc/fields.php:57
-msgid "Get tickets"
-msgstr "Tickets kaufen"
+#. translators: 1: number of events, 2: number of skipped events, 3: number of
+#. events left.
+#: templates/admin-migration.php:24
+#, php-format
+msgid "Done. %1$d events copied, %2$d skipped. %3$d more are waiting."
+msgstr ""
+"Fertig. %1$d Events übernommen, %2$d übersprungen. %3$d weitere warten."
 
-#: templates/event-form.php:27
-msgid "Title"
-msgstr "Titel"
+#: templates/admin-migration.php:40
+msgid "Notes"
+msgstr "Hinweise"
 
-#: templates/event-form.php:39
-msgid "Category"
-msgstr "Kategorie"
+#: templates/admin-migration.php:57
+msgid "No events from WP Event Manager were found in this website."
+msgstr "Auf dieser Website wurden keine Events vom WP Event Manager gefunden."
 
-#: templates/event-form.php:41
+#. translators: 1: events, 2: venues, 3: organizers found in WP Event Manager.
+#: templates/admin-migration.php:64
+#, php-format
+msgid "Found in WP Event Manager: %1$d events, %2$d venues, %3$d organizers."
+msgstr ""
+"Im WP Event Manager gefunden: %1$d Events, %2$d Orte, %3$d Veranstalter."
+
+#. translators: 1: events already copied, 2: events still to copy.
+#: templates/admin-migration.php:76
+#, php-format
+msgid "Already copied: %1$d. Still to copy: %2$d."
+msgstr "Bereits übernommen: %1$d. Noch zu übernehmen: %2$d."
+
+#: templates/admin-migration.php:83
+msgid ""
+"Your WP Event Manager data stays untouched. Venues and organizers are copied"
+" together with the events that use them. Every run copies up to 50 events; "
+"run it again for the rest. Events copied before are skipped."
+msgstr ""
+"Deine Daten im WP Event Manager bleiben unverändert. Orte und Veranstalter "
+"werden zusammen mit den Events übernommen, die sie verwenden. Jeder "
+"Durchlauf übernimmt bis zu 50 Events, starte ihn für den Rest erneut. "
+"Bereits übernommene Events werden übersprungen."
+
+#. translators: %d: number of skipped events.
+#: templates/admin-migration.php:91
+#, php-format
+msgid ""
+"%d event was skipped because it has no readable start date. Fix the date in "
+"WP Event Manager, then use \"Try skipped events again\"."
+msgid_plural ""
+"%d events were skipped because they have no readable start date. Fix the "
+"dates in WP Event Manager, then use \"Try skipped events again\"."
+msgstr[0] ""
+"%d Event wurde übersprungen, weil er kein lesbares Startdatum hat. "
+"Korrigiere das Datum im WP Event Manager und nutze dann «Übersprungene "
+"Events erneut versuchen»."
+msgstr[1] ""
+"%d Events wurden übersprungen, weil sie kein lesbares Startdatum haben. "
+"Korrigiere die Daten im WP Event Manager und nutze dann «Übersprungene "
+"Events erneut versuchen»."
+
+#: templates/admin-migration.php:104
+msgid "Copy events now"
+msgstr "Events jetzt übernehmen"
+
+#: templates/admin-migration.php:105
+msgid "Check first (changes nothing)"
+msgstr "Zuerst prüfen (ändert nichts)"
+
+#: templates/admin-migration.php:107
+msgid "Try skipped events again"
+msgstr "Übersprungene Events erneut versuchen"
+
+#. translators: %s: event title.
+#: templates/event-delete.php:20
+#, php-format
+msgid "Delete \"%s\"? It is moved to the trash."
+msgstr "«%s» löschen? Der Event kommt in den Papierkorb."
+
+#: templates/event-delete.php:25
+msgid "Delete event"
+msgstr "Event löschen"
+
+#: templates/event-delete.php:26 templates/event-form.php:81
+msgid "Cancel"
+msgstr "Abbrechen"
+
+#: templates/event-details.php:32
+msgid "Open map"
+msgstr "Karte öffnen"
+
+#: templates/event-details.php:38
+msgid "Add to calendar:"
+msgstr "Zum Kalender hinzufügen:"
+
+#: templates/event-details.php:39
+msgid "Apple, Outlook (.ics)"
+msgstr "Apple, Outlook (.ics)"
+
+#: templates/event-details.php:40
+msgid "Google Calendar"
+msgstr "Google Kalender"
+
+#: templates/event-details.php:45
+msgid "Map"
+msgstr "Karte"
+
+#: templates/event-filters.php:22
+msgid "Search"
+msgstr "Suche"
+
+#: templates/event-filters.php:30
+msgid "All categories"
+msgstr "Alle Kategorien"
+
+#: templates/event-filters.php:39
+msgid "From"
+msgstr "Ab"
+
+#: templates/event-filters.php:44
+msgid "Filter"
+msgstr "Filtern"
+
+#: templates/event-filters.php:46
+msgid "Reset"
+msgstr "Zurücksetzen"
+
+#: templates/event-form.php:36
+msgid "About the event"
+msgstr "Zum Event"
+
+#: templates/event-form.php:42
 msgid "No category"
 msgstr "Keine Kategorie"
 
-#: templates/event-form.php:50
+#: templates/event-form.php:51
 msgid "Photo"
 msgstr "Foto"
 
-#: templates/event-form.php:55
+#: templates/event-form.php:54
+msgid "Choose a new photo to replace the current one."
+msgstr "Wähle ein neues Foto, um das aktuelle zu ersetzen."
+
+#: templates/event-form.php:61
 msgid "Description"
 msgstr "Beschreibung"
 
-#: templates/event-form.php:62
+#: templates/event-form.php:65
+msgid "The description has formatting and can only be changed in the backend."
+msgstr ""
+"Die Beschreibung ist formatiert und kann nur im Backend geändert werden."
+
+#: templates/event-form.php:71
+msgid "More details"
+msgstr "Weitere Angaben"
+
+#: templates/event-form.php:79
+msgid "Save changes"
+msgstr "Änderungen speichern"
+
+#: templates/event-form.php:79
 msgid "Save event"
 msgstr "Event speichern"
 
-#: templates/event-list.php:16
+#: templates/event-list.php:26
 msgid "There are no events at the moment."
 msgstr "Zurzeit sind keine Events geplant."
 
-#: templates/event-list.php:27
+#: templates/event-list.php:37
 msgid "More events"
 msgstr "Weitere Events"
 
 #: templates/event-login.php:11
 msgid "Please log in to add events. You stay logged in on this device."
-msgstr "Bitte melde dich an, um Events zu erfassen. Du bleibst auf diesem Gerät angemeldet."
+msgstr ""
+"Bitte melde dich an, um Events zu erfassen. Du bleibst auf diesem Gerät "
+"angemeldet."
 
-#. translators: %s: field label, e.g. "Start".
-#: inc/submit-form.php:82
-#, php-format
-msgid "Please fill in \"%s\"."
-msgstr "Bitte fülle «%s» aus."
+#: templates/event-my-events.php:14
+msgid "You have not added any events yet."
+msgstr "Du hast noch keine Events erfasst."
+
+#: templates/event-my-events.php:29
+msgid "View"
+msgstr "Ansehen"
+
+#: templates/event-my-events.php:32
+msgid "Edit"
+msgstr "Bearbeiten"
+
+#: templates/event-my-events.php:36
+msgid "Delete"
+msgstr "Löschen"
+
+#: templates/event-page.php:14
+msgid "My events"
+msgstr "Meine Events"

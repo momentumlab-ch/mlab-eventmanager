@@ -10,6 +10,8 @@ defined( 'ABSPATH' ) || exit;
 const MLAB_EM_POST_TYPE = 'mlab_event';
 const MLAB_EM_CATEGORY  = 'mlab_event_category';
 const MLAB_EM_TAG       = 'mlab_event_tag';
+const MLAB_EM_VENUE     = 'mlab_venue';
+const MLAB_EM_ORGANIZER = 'mlab_organizer';
 
 add_action( 'init', 'mlab_em_register_post_type' );
 add_action( 'init', 'mlab_em_register_taxonomies' );
@@ -81,17 +83,16 @@ function mlab_em_register_taxonomies(): void {
  */
 function mlab_em_register_meta(): void {
 	foreach ( mlab_em_event_fields() as $key => $field ) {
-		$type = $field['type'];
-		register_post_meta(
-			MLAB_EM_POST_TYPE,
-			mlab_em_meta_key( $key ),
-			array(
-				'type'              => 'string',
-				'single'            => true,
-				'show_in_rest'      => true,
-				'sanitize_callback' => static fn( $value ) => mlab_em_sanitize_value( $value, $type ),
-				'auth_callback'     => static fn( $allowed, $meta_key, $post_id ) => current_user_can( 'edit_post', $post_id ),
-			)
-		);
+				register_post_meta(
+					MLAB_EM_POST_TYPE,
+					mlab_em_meta_key( $key ),
+					array(
+						'type'              => 'string',
+						'single'            => true,
+						'show_in_rest'      => true,
+						'sanitize_callback' => static fn( $value ) => mlab_em_sanitize_value( $value, $field['type'], $field ),
+						'auth_callback'     => static fn( $allowed, $meta_key, $post_id ) => current_user_can( 'edit_post', $post_id ),
+					)
+				);
 	}
 }

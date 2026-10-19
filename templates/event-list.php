@@ -4,7 +4,7 @@
  *
  * @package mlab-eventmanager
  *
- * @var array{query: WP_Query} $args
+ * @var array{query: WP_Query, filters: array{q: string, cat: string, from: string}|null, locked: bool} $args
  */
 
 defined( 'ABSPATH' ) || exit;
@@ -12,6 +12,16 @@ defined( 'ABSPATH' ) || exit;
 $mlab_em_query = $args['query'];
 ?>
 <div class="mlab-em-list">
+	<?php
+	if ( $args['filters'] ) {
+		$mlab_em_filter_args = array(
+			'values'        => $args['filters'],
+			'show_category' => ! $args['locked'],
+		);
+		echo mlab_em_get_template( 'event-filters', $mlab_em_filter_args ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- The template escapes its own output.
+	}
+	?>
+
 	<?php if ( ! $mlab_em_query->have_posts() ) : ?>
 		<p class="mlab-em-empty"><?php esc_html_e( 'There are no events at the moment.', 'mlab-eventmanager' ); ?></p>
 	<?php endif; ?>

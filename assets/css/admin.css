@@ -1,7 +1,20 @@
-.mlab-em-meta-box {
+.mlab-em-meta-box .mlab-em-group,
+.mlab-em-wrap .mlab-em-group {
 	display: grid;
 	gap: 4px 16px;
 	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+	margin: 0 0 16px;
+	padding: 12px 16px;
+	border: 1px solid #dcdcde;
+	border-radius: 4px;
+}
+
+.mlab-em-meta-box legend {
+	padding: 0 8px;
+	font-size: 12px;
+	font-weight: 600;
+	letter-spacing: 0.04em;
+	text-transform: uppercase;
 }
 
 .mlab-em-meta-box .mlab-em-field {
@@ -13,4 +26,26 @@
 
 .mlab-em-meta-box .mlab-em-label {
 	font-weight: 600;
+}
+
+.mlab-em-meta-box .mlab-em-hint {
+	color: #646970;
+	font-size: 12px;
+}
+
+.mlab-em-meta-box:not(:has(.mlab-em-group)) {
+	display: grid;
+	gap: 4px 16px;
+	grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+}
+
+.mlab-em-badge {
+	display: inline-block;
+	padding: 0 8px;
+	border-radius: 10px;
+	background: #f0f0f1;
+	color: #50575e;
+	font-size: 11px;
+	font-weight: 600;
+	line-height: 18px;
 }
