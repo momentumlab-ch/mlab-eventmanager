@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.3.1
+
+- Die Seite für die Schnellerfassung ist nur noch für angemeldete Benutzer: Besucher werden zur WordPress-Anmeldung geleitet und danach zurück. Die Seite ist für Suchmaschinen gesperrt (noindex).
+
 ## 0.3.0
 
 - Neu: Reiter im Editor. Die Event-Angaben stehen direkt unter dem Titel, je ein Reiter für Wann, Wo, Online, Veranstalter, Tickets und Anzeige. Weniger Scrollen.

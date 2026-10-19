@@ -12,6 +12,8 @@ defined( 'ABSPATH' ) || exit;
 add_shortcode( 'mlab_event_form', 'mlab_em_render_form_shortcode' );
 add_action( 'admin_post_mlab_em_submit', 'mlab_em_handle_submit' );
 add_action( 'admin_post_nopriv_mlab_em_submit', 'mlab_em_redirect_to_login' );
+add_action( 'template_redirect', 'mlab_em_protect_submit_page' );
+add_filter( 'wp_robots', 'mlab_em_submit_page_robots' );
 
 /**
  * URL of the quick entry page, empty if none is set.
@@ -20,6 +22,39 @@ function mlab_em_submit_page_url(): string {
 	$page_id = absint( mlab_em_get_option( 'submit_page' ) );
 
 	return $page_id && 'publish' === get_post_status( $page_id ) ? (string) get_permalink( $page_id ) : '';
+}
+
+/**
+ * Whether the current request shows the quick entry page.
+ */
+function mlab_em_is_submit_page(): bool {
+	$page_id = absint( mlab_em_get_option( 'submit_page' ) );
+
+	return $page_id && is_page( $page_id );
+}
+
+/**
+ * Guests opening the quick entry page go to the WordPress login and come back afterwards.
+ */
+function mlab_em_protect_submit_page(): void {
+	if ( mlab_em_is_submit_page() && ! is_user_logged_in() ) {
+		auth_redirect();
+	}
+}
+
+/**
+ * Keeps the quick entry page out of search engines.
+ *
+ * @param array<string, bool|string> $robots Robots directives.
+ * @return array<string, bool|string>
+ */
+function mlab_em_submit_page_robots( array $robots ): array {
+	if ( mlab_em_is_submit_page() ) {
+		$robots['noindex']  = true;
+		$robots['nofollow'] = true;
+	}
+
+	return $robots;
 }
 
 /**
