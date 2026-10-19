@@ -38,7 +38,8 @@ Colours are CSS custom properties, e.g. `--mlab-em-accent`.
 
 = Filters =
 
-* `mlab_em_event_fields`: add, remove or change event fields. New fields appear in the editor, the REST API and, with `'quick' => true`, in the phone form.
+* `mlab_em_event_fields`: add, remove or change event fields. New fields appear in the editor, the REST API and on the event page. Optional keys: `required`, `default`, `quick` (phone form), `column` (admin list), `button` (url fields as button), `details` (false hides the field on the event page).
+* `mlab_em_sanitize_value`, `mlab_em_input_type`: sanitizing and input type for custom field types.
 * `mlab_em_settings_fields`: add settings.
 * `mlab_em_post_type_args`, `mlab_em_taxonomy_args`: change the post type and taxonomies.
 * `mlab_em_list_query_args`: change the list query.
