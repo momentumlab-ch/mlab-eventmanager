@@ -85,12 +85,34 @@ function mlab_em_get_place( int $post_id ): array {
 		$place = array(
 			'name'    => mlab_em_get_field( $post_id, 'location' ),
 			'address' => mlab_em_get_field( $post_id, 'address' ),
-			'lat'     => '',
-			'lon'     => '',
+			'lat'     => mlab_em_get_field( $post_id, 'lat' ),
+			'lon'     => mlab_em_get_field( $post_id, 'lon' ),
 		);
 	}
 
 	return apply_filters( 'mlab_em_place', $place, $post_id );
+}
+
+/**
+ * Show the event image on the event page? On unless switched off for this event.
+ *
+ * @param int $post_id Event ID.
+ */
+function mlab_em_show_image( int $post_id ): bool {
+	return '0' !== mlab_em_get_field( $post_id, 'show_image' );
+}
+
+/**
+ * Show the embedded map? The event setting wins, otherwise the global setting.
+ *
+ * @param int $post_id Event ID.
+ */
+function mlab_em_show_map( int $post_id ): bool {
+	$value = mlab_em_get_field( $post_id, 'show_map' );
+	if ( '' === $value ) {
+		return (bool) mlab_em_get_option( 'map_embed' );
+	}
+	return '1' === $value;
 }
 
 /**

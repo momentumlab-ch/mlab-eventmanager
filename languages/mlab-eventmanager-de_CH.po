@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Event Manager 0.2.0\n"
+"Project-Id-Version: MomentumLab Event Manager 0.3.0\n"
 "Report-Msgid-Bugs-To: support@momentumlab.ch\n"
 "POT-Creation-Date: 2026-10-19T09:08:29+00:00\n"
 "PO-Revision-Date: 2026-10-19 09:10+0000\n"
@@ -735,3 +735,24 @@ msgstr "Löschen"
 #: templates/event-page.php:14
 msgid "My events"
 msgstr "Meine Events"
+
+msgid "Latitude"
+msgstr "Breitengrad"
+
+msgid "Longitude"
+msgstr "Längengrad"
+
+msgid "Filled in automatically from the address when the map is switched on."
+msgstr "Wird automatisch aus der Adresse ermittelt, sobald die Karte eingeschaltet ist."
+
+msgid "Show image on the event page"
+msgstr "Bild auf der Event-Seite zeigen"
+
+msgid "The event image stays in lists and teasers either way."
+msgstr "In Listen und Vorschauen bleibt das Bild so oder so sichtbar."
+
+msgid "Show map (OpenStreetMap)"
+msgstr "Karte anzeigen (OpenStreetMap)"
+
+msgid "Shows a map of the place on the event page. The position is looked up from the address when you save."
+msgstr "Zeigt eine Karte des Orts auf der Event-Seite. Die Position wird beim Speichern aus der Adresse ermittelt."

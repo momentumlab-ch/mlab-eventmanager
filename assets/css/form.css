@@ -231,3 +231,27 @@
 	padding: 12px;
 	font-size: 16px;
 }
+
+/* Switches like "Show map": box and text side by side. */
+.mlab-em-form .mlab-em-field--checkbox {
+	display: flex;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 10px;
+}
+
+.mlab-em-form .mlab-em-field--checkbox input[type="checkbox"] {
+	order: 1;
+	width: 1.25rem;
+	height: 1.25rem;
+	margin: 0;
+}
+
+.mlab-em-form .mlab-em-field--checkbox .mlab-em-label {
+	order: 2;
+}
+
+.mlab-em-form .mlab-em-field--checkbox .mlab-em-hint {
+	order: 3;
+	flex-basis: 100%;
+}

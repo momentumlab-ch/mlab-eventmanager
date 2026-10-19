@@ -49,3 +49,74 @@
 	font-weight: 600;
 	line-height: 18px;
 }
+
+/* Tabs in the event details box. */
+.mlab-em-tabs {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 0 0 12px;
+	border-bottom: 1px solid #dcdcde;
+}
+
+.mlab-em-tab {
+	margin: 0 0 -1px;
+	padding: 8px 14px;
+	border: 1px solid transparent;
+	border-radius: 4px 4px 0 0;
+	background: none;
+	color: #2271b1;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.mlab-em-tab[aria-selected="true"] {
+	border-color: #dcdcde #dcdcde #fff;
+	background: #fff;
+	color: #1d2327;
+}
+
+.mlab-em-tab:focus-visible {
+	outline: 2px solid #2271b1;
+	outline-offset: 1px;
+}
+
+.mlab-em-meta-box[data-mlab-em-tabs] .mlab-em-group {
+	border: 0;
+	padding: 4px 0 0;
+	margin: 0;
+}
+
+.mlab-em-meta-box[data-mlab-em-tabs] .mlab-em-group > legend {
+	display: none;
+}
+
+.mlab-em-group[hidden] {
+	display: none;
+}
+
+.mlab-em-meta-box .mlab-em-field--checkbox {
+	flex-direction: row;
+	flex-wrap: wrap;
+	align-items: center;
+	gap: 6px 8px;
+}
+
+.mlab-em-meta-box .mlab-em-field--checkbox .mlab-em-label {
+	order: 2;
+}
+
+.mlab-em-meta-box .mlab-em-field--checkbox input[type="checkbox"] {
+	order: 1;
+	margin: 0;
+}
+
+.mlab-em-meta-box .mlab-em-field--checkbox .mlab-em-hint {
+	order: 3;
+	flex-basis: 100%;
+}
+
+/* Box between title and text editor. */
+#mlab-em-details {
+	margin-top: 20px;
+}

@@ -2,7 +2,7 @@
 # This file is distributed under the GPL-2.0-or-later.
 msgid ""
 msgstr ""
-"Project-Id-Version: MomentumLab Event Manager 0.2.0\n"
+"Project-Id-Version: MomentumLab Event Manager 0.3.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/mlab-eventmanager\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -690,4 +690,25 @@ msgstr ""
 
 #: templates/event-page.php:14
 msgid "My events"
+msgstr ""
+
+msgid "Latitude"
+msgstr ""
+
+msgid "Longitude"
+msgstr ""
+
+msgid "Filled in automatically from the address when the map is switched on."
+msgstr ""
+
+msgid "Show image on the event page"
+msgstr ""
+
+msgid "The event image stays in lists and teasers either way."
+msgstr ""
+
+msgid "Show map (OpenStreetMap)"
+msgstr ""
+
+msgid "Shows a map of the place on the event page. The position is looked up from the address when you save."
 msgstr ""

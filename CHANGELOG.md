@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.3.0
+
+- Neu: Reiter im Editor. Die Event-Angaben stehen direkt unter dem Titel, je ein Reiter für Wann, Wo, Online, Veranstalter, Tickets und Anzeige. Weniger Scrollen.
+- Neu: Reiter "Anzeige" mit zwei Schaltern pro Event: "Bild auf der Event-Seite zeigen" und "Karte anzeigen (OpenStreetMap)".
+- Neu: Die Karte braucht keine Koordinaten mehr von Hand. Die Position wird beim Speichern aus Ort und Adresse ermittelt (OpenStreetMap).
+- Ohne Karte entfällt auch der Knopf "Karte öffnen".
+
 ## 0.2.0
 
 - Neu: klarere Struktur. Felder in Gruppen (Wann, Wo, Online, Veranstalter, Tickets und Preis) im Editor und im Handy-Formular, "Weitere Angaben" einklappbar.
