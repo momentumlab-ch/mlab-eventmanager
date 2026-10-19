@@ -1,0 +1,107 @@
+/* MomentumLab Event Manager: quick entry form, built for one-handed use on a phone. Tokens and .mlab-em-button come from frontend.css. */
+
+.mlab-em-form-wrap {
+	max-width: 560px;
+	margin: 0 auto;
+}
+
+.mlab-em-form {
+	display: grid;
+	gap: 16px;
+}
+
+.mlab-em-form .mlab-em-field {
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
+	margin: 0;
+}
+
+.mlab-em-form .mlab-em-label {
+	font-weight: 600;
+}
+
+.mlab-em-form input,
+.mlab-em-form select,
+.mlab-em-form textarea {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 48px;
+	padding: 12px;
+	border: 1px solid var(--mlab-em-input-border, rgba(0, 0, 0, 0.2));
+	border-radius: var(--mlab-em-radius);
+	background: #fff;
+	color: inherit;
+	/* 16px stops iOS Safari from zooming into the field. */
+	font-size: 16px;
+}
+
+.mlab-em-form input:focus,
+.mlab-em-form select:focus,
+.mlab-em-form textarea:focus {
+	border-color: var(--mlab-em-accent);
+	outline: 2px solid var(--mlab-em-accent);
+	outline-offset: 0;
+}
+
+.mlab-em-form__actions {
+	position: sticky;
+	bottom: 0;
+	padding: 12px 0 calc(12px + env(safe-area-inset-bottom));
+	background: var(--mlab-em-surface, #fff);
+}
+
+.mlab-em-form .mlab-em-button {
+	width: 100%;
+	min-height: 52px;
+	font-size: 17px;
+}
+
+.mlab-em-login input[type="submit"] {
+	width: 100%;
+	min-height: 52px;
+	border: 0;
+	border-radius: 999px;
+	background: var(--mlab-em-accent);
+	color: var(--mlab-em-accent-text);
+	font-size: 17px;
+	font-weight: 600;
+	cursor: pointer;
+}
+
+.mlab-em-notice {
+	margin: 0 0 16px;
+	padding: 12px 16px;
+	border-left: 4px solid;
+	border-radius: 8px;
+	background: rgba(0, 0, 0, 0.04);
+}
+
+.mlab-em-notice p {
+	margin: 0;
+}
+
+.mlab-em-notice p + p {
+	margin-top: 8px;
+}
+
+.mlab-em-notice--success {
+	border-color: #15803d;
+}
+
+.mlab-em-notice--warning {
+	border-color: #b45309;
+}
+
+.mlab-em-notice--error {
+	border-color: #b91c1c;
+}
+
+.mlab-em-login input[type="text"],
+.mlab-em-login input[type="password"] {
+	box-sizing: border-box;
+	width: 100%;
+	min-height: 48px;
+	padding: 12px;
+	font-size: 16px;
+}
