@@ -23,7 +23,7 @@ function mlab_em_register_assets(): void {
 }
 
 /**
- * Loads the admin styles on the screens of events, venues and organizers.
+ * Loads the admin styles and the tabs script on the screens of events, venues and organizers.
  */
 function mlab_em_admin_assets(): void {
 	$screen = get_current_screen();
@@ -32,4 +32,14 @@ function mlab_em_admin_assets(): void {
 	}
 
 	wp_enqueue_style( 'mlab-em-admin', MLAB_EM_URL . 'assets/css/admin.css', array(), MLAB_EM_VERSION );
+	wp_enqueue_script(
+		'mlab-em-admin',
+		MLAB_EM_URL . 'assets/js/admin.js',
+		array(),
+		MLAB_EM_VERSION,
+		array(
+			'in_footer' => true,
+			'strategy'  => 'defer',
+		)
+	);
 }

@@ -10,8 +10,8 @@
 defined( 'ABSPATH' ) || exit;
 
 $mlab_em_id        = $args['post_id'];
-$mlab_em_map_link  = mlab_em_map_link( $mlab_em_id );
-$mlab_em_embed_url = mlab_em_get_option( 'map_embed' ) ? mlab_em_map_embed_url( $mlab_em_id ) : '';
+$mlab_em_map_link  = mlab_em_show_map( $mlab_em_id ) ? mlab_em_map_link( $mlab_em_id ) : '';
+$mlab_em_embed_url = mlab_em_show_map( $mlab_em_id ) ? mlab_em_map_embed_url( $mlab_em_id ) : '';
 $mlab_em_google    = mlab_em_google_calendar_url( $mlab_em_id );
 ?>
 <div class="mlab-em-details">

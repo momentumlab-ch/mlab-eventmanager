@@ -22,6 +22,7 @@ function mlab_em_field_groups(): array {
 		'online'    => __( 'Online', 'mlab-eventmanager' ),
 		'organizer' => __( 'Organizer', 'mlab-eventmanager' ),
 		'tickets'   => __( 'Tickets and price', 'mlab-eventmanager' ),
+		'display'   => __( 'Display', 'mlab-eventmanager' ),
 	);
 
 	return apply_filters( 'mlab_em_field_groups', $groups );
@@ -85,6 +86,19 @@ function mlab_em_event_fields(): array {
 			'details' => false,
 			'hint'    => __( 'Only needed if no venue is selected.', 'mlab-eventmanager' ),
 		),
+		'lat'          => array(
+			'label'   => __( 'Latitude', 'mlab-eventmanager' ),
+			'type'    => 'latitude',
+			'group'   => 'where',
+			'details' => false,
+			'hint'    => __( 'Filled in automatically from the address when the map is switched on.', 'mlab-eventmanager' ),
+		),
+		'lon'          => array(
+			'label'   => __( 'Longitude', 'mlab-eventmanager' ),
+			'type'    => 'longitude',
+			'group'   => 'where',
+			'details' => false,
+		),
 		'online_url'   => array(
 			'label'  => __( 'Online link', 'mlab-eventmanager' ),
 			'type'   => 'url',
@@ -115,6 +129,22 @@ function mlab_em_event_fields(): array {
 			'type'   => 'url',
 			'group'  => 'tickets',
 			'button' => __( 'Get tickets', 'mlab-eventmanager' ),
+		),
+		'show_image'   => array(
+			'label'   => __( 'Show image on the event page', 'mlab-eventmanager' ),
+			'type'    => 'checkbox',
+			'group'   => 'display',
+			'default' => '1',
+			'details' => false,
+			'hint'    => __( 'The event image stays in lists and teasers either way.', 'mlab-eventmanager' ),
+		),
+		'show_map'     => array(
+			'label'   => __( 'Show map (OpenStreetMap)', 'mlab-eventmanager' ),
+			'type'    => 'checkbox',
+			'group'   => 'display',
+			'default' => '',
+			'details' => false,
+			'hint'    => __( 'Shows a map of the place on the event page. The position is looked up from the address when you save.', 'mlab-eventmanager' ),
 		),
 	);
 
@@ -188,6 +218,9 @@ function mlab_em_sanitize_value( $value, string $type, array $field = array() ):
 			break;
 		case 'post':
 			$clean = mlab_em_sanitize_linked_post( absint( $raw ), (array) ( $field['post_type'] ?? mlab_em_linked_post_types() ) );
+			break;
+		case 'checkbox':
+			$clean = '1' === $raw ? '1' : '0';
 			break;
 		case 'latitude':
 			$clean = mlab_em_sanitize_coordinate( $raw, 90 );
@@ -327,6 +360,11 @@ function mlab_em_render_control( string $id, string $name, array $field, string 
 		mlab_em_render_post_select( $id, $name, (string) $field['post_type'], $value );
 		return;
 	}
+	if ( 'checkbox' === $field['type'] ) {
+		$checked = '' === $value ? (string) ( $field['default'] ?? '' ) : $value;
+		printf( '<input type="hidden" name="%s" value="0"><input type="checkbox" id="%s" name="%s" value="1"%s>', esc_attr( $name ), esc_attr( $id ), esc_attr( $name ), checked( $checked, '1', false ) );
+		return;
+	}
 	if ( 'textarea' === $field['type'] ) {
 		printf( '<textarea id="%s" name="%s" rows="4"%s>%s</textarea>', esc_attr( $id ), esc_attr( $name ), esc_attr( $required ), esc_textarea( $value ) );
 		return;
@@ -377,7 +415,7 @@ function mlab_em_render_post_select( string $id, string $name, string $post_type
  */
 function mlab_em_render_field_list( array $fields, callable $current ): void {
 	foreach ( $fields as $key => $field ) {
-		echo '<p class="mlab-em-field">';
+		printf( '<p class="mlab-em-field%s">', 'checkbox' === ( $field['type'] ?? '' ) ? ' mlab-em-field--checkbox' : '' );
 		mlab_em_render_input( $key, $field, (string) $current( $key, $field ) );
 		echo '</p>';
 	}
