@@ -4,7 +4,7 @@ Tags: events, event manager, calendar, event list, frontend submission
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.3.0
+Stable tag: 0.3.1
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,9 @@ Colours are CSS custom properties, e.g. `--mlab-em-accent`.
 * `mlab_em_list_item_after( $post_id )`, `mlab_em_details_after( $post_id )`, `mlab_em_form_fields_after()`: add output in the templates.
 
 == Changelog ==
+
+= 0.3.1 =
+* Die Seite für die Schnellerfassung ist nur noch für angemeldete Benutzer: Besucher werden zur WordPress-Anmeldung geleitet und danach zurück. Die Seite ist für Suchmaschinen gesperrt (noindex).
 
 = 0.3.0 =
 * Neu: Reiter im Editor. Die Event-Angaben stehen direkt unter dem Titel, je ein Reiter für Wann, Wo, Online, Veranstalter, Tickets und Anzeige. Weniger Scrollen.
