@@ -4,7 +4,7 @@ Tags: events, event manager, calendar, event list, frontend submission
 Requires at least: 6.4
 Tested up to: 6.8
 Requires PHP: 8.0
-Stable tag: 0.3.1
+Stable tag: 0.4.0
 License: GPLv2 or later
 License URI: https://www.gnu.org/licenses/gpl-2.0.html
 
@@ -77,6 +77,9 @@ Colours are CSS custom properties, e.g. `--mlab-em-accent`.
 * `mlab_em_list_item_after( $post_id )`, `mlab_em_details_after( $post_id )`, `mlab_em_form_fields_after()`: add output in the templates.
 
 == Changelog ==
+
+= 0.4.0 =
+* Bessere Event-Daten für die Google-Eventsuche: Preis und Währung aus dem Feld «Preis» (Zahl oder «Eintritt frei», ohne Preis wird die Beschreibung auf «Eintritt frei» geprüft), Angebot mit Link zu Tickets oder zur Event-Seite, Veranstalter fällt auf die Website zurück, Ort hat immer eine Adresse, Bild in mehreren Grössen. Filter mlab_em_currency (Standard CHF) und mlab_em_schema_organizer.
 
 = 0.3.1 =
 * Die Seite für die Schnellerfassung ist nur noch für angemeldete Benutzer: Besucher werden zur WordPress-Anmeldung geleitet und danach zurück. Die Seite ist für Suchmaschinen gesperrt (noindex).

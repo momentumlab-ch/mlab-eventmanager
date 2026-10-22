@@ -1,5 +1,9 @@
 # Changelog
 
+## 0.4.0
+
+- Bessere Event-Daten für die Google-Eventsuche: Preis und Währung aus dem Feld «Preis» (Zahl oder «Eintritt frei», ohne Preis wird die Beschreibung auf «Eintritt frei» geprüft), Angebot mit Link zu Tickets oder zur Event-Seite, Veranstalter fällt auf die Website zurück, Ort hat immer eine Adresse, Bild in mehreren Grössen. Filter mlab_em_currency (Standard CHF) und mlab_em_schema_organizer.
+
 ## 0.3.1
 
 - Die Seite für die Schnellerfassung ist nur noch für angemeldete Benutzer: Besucher werden zur WordPress-Anmeldung geleitet und danach zurück. Die Seite ist für Suchmaschinen gesperrt (noindex).

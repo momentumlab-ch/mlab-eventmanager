@@ -3,7 +3,7 @@
  * Plugin Name:       MomentumLab Event Manager
  * Plugin URI:        https://github.com/momentumlab-ch/mlab-eventmanager
  * Description:       Lightweight event management: create, list and manage events in the backend, on the website and quickly on a phone.
- * Version:           0.3.1
+ * Version:           0.4.0
  * Requires at least: 6.4
  * Requires PHP:      8.0
  * Author:            MomentumLab
@@ -19,7 +19,7 @@
 
 defined( 'ABSPATH' ) || exit;
 
-define( 'MLAB_EM_VERSION', '0.3.1' );
+define( 'MLAB_EM_VERSION', '0.4.0' );
 define( 'MLAB_EM_FILE', __FILE__ );
 define( 'MLAB_EM_DIR', plugin_dir_path( __FILE__ ) );
 define( 'MLAB_EM_URL', plugin_dir_url( __FILE__ ) );
